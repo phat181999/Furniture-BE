@@ -3,7 +3,7 @@ const {userRouter} = require('./user.router');
 const {typeProductRouter} = require('./typeProduct.router');
 const {productRouter} = require('./product.router');
 const {cartRouter} = require('./cart.router');
-const {paymentRouter} = require('../middlewares/payment/payment');
+const {paymentRouter} = require('./payment.router');
 
 const rootRouter = express.Router();
 rootRouter.use('/user',userRouter);
