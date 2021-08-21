@@ -6,6 +6,7 @@ const { rootRouter } = require('./router/index');
 var cors = require('cors');
 app.use(cors());
 app.use(express.json());
+
 // cài đặt static file
 const publicPathDirectory = path.join(__dirname, "./public");
 app.use("/public", express.static(publicPathDirectory));
