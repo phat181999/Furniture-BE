@@ -29,6 +29,9 @@ module.exports = {
       nameProduct: {
         type: Sequelize.STRING
       },
+      description: {
+        type: Sequelize.STRING(1000)
+      },
       color: {
         type: Sequelize.STRING
       },

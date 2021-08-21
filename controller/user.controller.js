@@ -118,7 +118,8 @@ const getCart = async (req, res) =>
     {
       throw err;
     })
-}
+};
+
 module.exports = {
   createUsers,
   getAll,
