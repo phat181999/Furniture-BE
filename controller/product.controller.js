@@ -1,12 +1,12 @@
 const { Product, Images } = require("../models");
 
 const createProducts = async (req, res) => {
-  const { nameProduct, color, price } = req.body;
+  const { nameProduct, color, price, description } = req.body;
   try {
-    // const { file } = req;
-    // const urlImage = `http://localhost:4000/${file.path}`;
+    const { file } = req;
+    const urlImage = `http://localhost:4000/${file.path}`;
     const newProducts = await Product.create(
-     { nameProduct, color, price},
+     { nameProduct, color, price, description, pictures:urlImage},
     // req.body,
     //   {
     //     include:{
@@ -40,9 +40,9 @@ const getOneProducts = async (req, res) => {
 };
 const updateProducts = async (req, res) => {
   const { id } = req.params;
-  const { nameProduct, color, price } = req.body;
+  const { nameProduct, color, price, description } = req.body;
   const updateUsers = await Product.update(
-    { nameProduct, color, price },
+    { nameProduct, color, price, description },
     { where: { id } }
   );
   try {

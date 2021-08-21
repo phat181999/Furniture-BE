@@ -93,7 +93,8 @@ const getCart = async (req,res) =>{
     }).catch(err =>{
       throw err;
     })
-}
+};
+
 module.exports = {
   createUsers,
   getAll,

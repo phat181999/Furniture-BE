@@ -16,7 +16,18 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   TypeProduct.init({
-    nameTypeProduct: DataTypes.STRING,
+    nameTypeProduct: {
+      type: DataTypes.STRING,
+      allowNull: 
+        {
+          msg: 'Please enter your nameProduct'
+        },
+      validate: 
+        {
+          notEmpty: true,
+          len: [5,100],
+        },
+    },
     imagesTypeProduct:DataTypes.STRING
   }, {
     sequelize,
