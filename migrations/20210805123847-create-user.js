@@ -21,7 +21,11 @@ module.exports = {
       },
       type: {
         type: Sequelize.STRING,
+<<<<<<< HEAD
         defaultValue: "UNGVIEN",
+=======
+        defaultValue: "user",
+>>>>>>> 3f183ba46d27e84b2b528799ae7f7f314f1cbcc9
       },
       phone: {
         type: Sequelize.INTEGER
