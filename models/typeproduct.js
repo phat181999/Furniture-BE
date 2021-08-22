@@ -16,6 +16,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   TypeProduct.init({
+<<<<<<< HEAD
+    nameTypeProduct: DataTypes.STRING,
+=======
     nameTypeProduct: {
       type: DataTypes.STRING,
       allowNull: 
@@ -28,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
           len: [5,100],
         },
     },
+>>>>>>> 3f183ba46d27e84b2b528799ae7f7f314f1cbcc9
     imagesTypeProduct:DataTypes.STRING
   }, {
     sequelize,

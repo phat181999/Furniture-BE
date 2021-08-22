@@ -20,6 +20,15 @@ module.exports = (sequelize, DataTypes) =>
     }
   };
   User.init({
+<<<<<<< HEAD
+    account: DataTypes.STRING,
+    fullname: DataTypes.STRING,
+    password: DataTypes.STRING,
+    avatar: DataTypes.STRING,
+    type: DataTypes.STRING,
+    phone: DataTypes.INTEGER,
+    address: DataTypes.STRING,
+=======
 
     account: {
       type: DataTypes.STRING,
@@ -74,6 +83,7 @@ module.exports = (sequelize, DataTypes) =>
           len: [5,100],
         },
     },
+>>>>>>> 3f183ba46d27e84b2b528799ae7f7f314f1cbcc9
   }, {
     sequelize,
     modelName: 'User',
