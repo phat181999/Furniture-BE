@@ -6,6 +6,8 @@ const {
   getOneProducts,
   updateProducts,
   deleteProducts,
+  fillPriceMax,
+  fillPriceMin
 } = require("../controller/product.controller");
 const {uploadImage} = require('../middlewares/upload/upload-image');
 const {AlotOfUploadImage} = require('../middlewares/upload/aLotOf-Images');
@@ -15,7 +17,8 @@ const { authorize } = require ('../middlewares/Authenticate/authorize');
 productRouter.post('/create-products',authenticate,authorize(['admin']),createProducts);
 productRouter.get('/get-all-products',getAllProducts);
 productRouter.get('/get-one-products/:id',getOneProducts);
-productRouter.put('/update-products/:id',updateProducts);
-productRouter.delete('/delete-products/:id',deleteProducts);
-
+productRouter.put('/update-products/:id',authenticate,authorize(['admin']),updateProducts);
+productRouter.delete('/delete-products/:id',authenticate,authorize(['admin']),deleteProducts);
+productRouter.get('/get-desc-products',fillPriceMin);
+productRouter.get('/get-asc-products',fillPriceMax);
 module.exports = { productRouter };
