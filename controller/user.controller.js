@@ -118,12 +118,8 @@ const getCart = async (req, res) =>
     {
       throw err;
     })
-<<<<<<< HEAD
-}
-=======
 };
 
->>>>>>> 3f183ba46d27e84b2b528799ae7f7f314f1cbcc9
 module.exports = {
   createUsers,
   getAll,

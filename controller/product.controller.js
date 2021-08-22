@@ -1,21 +1,12 @@
 const { Product, Images } = require("../models");
 
 const createProducts = async (req, res) => {
-<<<<<<< HEAD
-  const { nameProduct, color, price } = req.body;
-  try {
-    // const { file } = req;
-    // const urlImage = `http://localhost:4000/${file.path}`;
-    const newProducts = await Product.create(
-     { nameProduct, color, price},
-=======
   const { nameProduct, color, price, description } = req.body;
   try {
     const { file } = req;
     const urlImage = `http://localhost:4000/${file.path}`;
     const newProducts = await Product.create(
      { nameProduct, color, price, description, pictures:urlImage},
->>>>>>> 3f183ba46d27e84b2b528799ae7f7f314f1cbcc9
     // req.body,
     //   {
     //     include:{
@@ -49,15 +40,9 @@ const getOneProducts = async (req, res) => {
 };
 const updateProducts = async (req, res) => {
   const { id } = req.params;
-<<<<<<< HEAD
-  const { nameProduct, color, price } = req.body;
-  const updateUsers = await Product.update(
-    { nameProduct, color, price },
-=======
   const { nameProduct, color, price, description } = req.body;
   const updateUsers = await Product.update(
     { nameProduct, color, price, description },
->>>>>>> 3f183ba46d27e84b2b528799ae7f7f314f1cbcc9
     { where: { id } }
   );
   try {
@@ -75,10 +60,40 @@ const deleteProducts = async (req, res) => {
     res.status(200).send(err);
   }
 };
+const fillPriceMax = async (req,res) => {
+    const fillMax = await Product.findAll({
+        order: [["price","DESC"]]
+    });
+    try{
+      if (fillMax) {
+        res.send(fillMax);
+      }
+    }
+    catch (err){
+      res.send(err);
+      console.log(err);
+    }
+};
+const fillPriceMin = async (req,res) => {
+    const fillMin = await Product.findAll({
+      order: [["price","ASC"]]
+    });
+    try{
+      if (fillMin) {
+        res.send(fillMin);
+      }
+    }
+    catch (err){
+      res.send(err);
+      console.log(err);
+    }
+}
 module.exports = {
   createProducts,
   getAllProducts,
   getOneProducts,
   updateProducts,
   deleteProducts,
+  fillPriceMin,
+  fillPriceMax
 };

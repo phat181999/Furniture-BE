@@ -29,12 +29,9 @@ module.exports = {
       nameProduct: {
         type: Sequelize.STRING
       },
-<<<<<<< HEAD
-=======
       description: {
         type: Sequelize.STRING(1000)
       },
->>>>>>> 3f183ba46d27e84b2b528799ae7f7f314f1cbcc9
       color: {
         type: Sequelize.STRING
       },

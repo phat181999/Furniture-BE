@@ -19,11 +19,6 @@ module.exports = (sequelize, DataTypes) => {
     }
   };
   Product.init({
-<<<<<<< HEAD
-    nameProduct: DataTypes.STRING,
-    color: DataTypes.STRING,
-    pictures: DataTypes.STRING,
-=======
     nameProduct: {
       type: DataTypes.STRING,
       allowNull: 
@@ -61,14 +56,10 @@ module.exports = (sequelize, DataTypes) => {
           len: [10,1000],
         },
     },
->>>>>>> 3f183ba46d27e84b2b528799ae7f7f314f1cbcc9
     slug: {
       type: DataTypes.STRING,
       unique: true
     },
-<<<<<<< HEAD
-    price: DataTypes.FLOAT
-=======
     price: {
       type:DataTypes.FLOAT,
       allowNull: 
@@ -78,10 +69,9 @@ module.exports = (sequelize, DataTypes) => {
       validate: 
         {
           notEmpty: true,
-          len: [10,225],
+          len: [5,20],
         },
     }
->>>>>>> 3f183ba46d27e84b2b528799ae7f7f314f1cbcc9
     }, {
     sequelize,
     modelName: 'Product',
