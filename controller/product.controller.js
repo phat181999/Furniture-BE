@@ -60,10 +60,40 @@ const deleteProducts = async (req, res) => {
     res.status(200).send(err);
   }
 };
+const fillPriceMax = async (req,res) => {
+    const fillMax = await Product.findAll({
+        order: [["price","DESC"]]
+    });
+    try{
+      if (fillMax) {
+        res.send(fillMax);
+      }
+    }
+    catch (err){
+      res.send(err);
+      console.log(err);
+    }
+};
+const fillPriceMin = async (req,res) => {
+    const fillMin = await Product.findAll({
+      order: [["price","ASC"]]
+    });
+    try{
+      if (fillMin) {
+        res.send(fillMin);
+      }
+    }
+    catch (err){
+      res.send(err);
+      console.log(err);
+    }
+}
 module.exports = {
   createProducts,
   getAllProducts,
   getOneProducts,
   updateProducts,
   deleteProducts,
+  fillPriceMin,
+  fillPriceMax
 };

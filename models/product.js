@@ -69,7 +69,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: 
         {
           notEmpty: true,
-          len: [10,225],
+          len: [5,20],
         },
     }
     }, {
