@@ -39,8 +39,8 @@ const getAll = async (req, res) =>
 };
 const getOneUser = async (req, res) =>
 {
-  const { id } = req.params;
-  const getOne = await User.findOne({ where: { id } });
+  const { account } = req.params;
+  const getOne = await User.findOne({ where: { account } });
   try
   {
     res.status(200).send(getOne);
