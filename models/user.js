@@ -11,12 +11,11 @@ module.exports = (sequelize, DataTypes) =>
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ Product, TypeProduct, carts })
-    {
+    static associate({checkOut,TypeProduct,carts}) {
       // define association here
-      this.hasMany(Product, { foreignKey: 'adminProductId', as: 'idAdminProduct' })
-      this.hasMany(TypeProduct, { foreignKey: 'adminTypeProductId', as: 'idAdminTypeProduct' })
-      this.hasMany(carts, { foreignKey: 'userId', as: 'idUserCart' })
+      this.hasMany(checkOut, {foreignKey: 'checkOutUserId', as: 'IdCheckOutUser'})
+      this.hasMany(TypeProduct , {foreignKey: 'adminTypeProductId', as: 'idAdminTypeProduct'})
+      this.hasMany(carts, {foreignKey: 'userId', as: 'idUserCart'})
     }
   };
   User.init({
@@ -27,6 +26,7 @@ module.exports = (sequelize, DataTypes) =>
         {
           msg: 'Please enter your account'
         },
+      unique: true,
       validate: 
         {
           notEmpty: true,
@@ -43,6 +43,22 @@ module.exports = (sequelize, DataTypes) =>
         {
           notEmpty: true,
           len: [5,100],
+          // is: /^[0-9a-f]{64}$/i,
+          // not: ["^[a-z]+$",'i']
+        },
+    },
+    email: {
+      type: DataTypes.STRING,
+      allowNull: 
+        {
+          msg: 'Please enter your email'
+        },
+      unique: true,
+      validate: 
+        {
+          notEmpty: true,
+          len: [5,100],
+          isEmail: true, 
         },
     },
  
@@ -56,6 +72,7 @@ module.exports = (sequelize, DataTypes) =>
         {
           msg: 'Please enter your phone'
         },
+      isNumeric: true,
       validate: 
         {
           notEmpty: true,

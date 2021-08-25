@@ -1,13 +1,15 @@
 const { User, carts, Product } = require("../models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const createUsers = async (req, res) =>
-{
-  const { fullname, account, password, address, phone, type } = req.body;
-  try
-  {
+var gravatarUrl = require('gravatar');
+
+const createUsers = async (req, res) => {
+  const { fullname,account, password, address, phone,type,email } = req.body;
+  try {   
+    
     const { file } = req;
-    const urlImage = file ? `http://localhost:5000/${file.path}` : "";
+    const emailAvatar = gravatarUrl.url(email);
+    const urlImage = file ?`http://localhost:5000/${file.path}` : emailAvatar;
     const salt = bcrypt.genSaltSync(10);
     const hashPassword = bcrypt.hashSync(password, salt);
     const newUsers = await User.create({
@@ -17,7 +19,8 @@ const createUsers = async (req, res) =>
       avatar: urlImage,
       address,
       phone,
-      type
+      type,
+      email
     });
     res.status(200).send(newUsers);
   } catch (err)
@@ -54,10 +57,11 @@ const updateuser = async (req, res) =>
  
     const { file } = req;
     const urlImage = file ? `http://localhost:4000/${file.path}` : req.body.avatarUser;
-    const { fullname, account, address, phone } = req.body;
+    const { fullname, account, address, phone,email } = req.body;
   const updateUsers = await User.update(
     {
        fullname,
+       email,
        address,
       phone, 
       avatar: urlImage, 

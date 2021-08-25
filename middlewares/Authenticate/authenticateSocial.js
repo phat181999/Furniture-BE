@@ -21,6 +21,7 @@ const authenSocial = async (req, res, next) =>
             await User.create({
                 fullname,
                 account,
+                email:account,
                 avatar: image,
                 password: hashPassword,
                 type
