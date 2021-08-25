@@ -8,13 +8,6 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      adminProductId: {
-        type: Sequelize.INTEGER,
-        references:{
-          model: 'users',
-          key: 'id'
-        }
-      },
       productFlowTypeID: {
         type: Sequelize.INTEGER,
         references:{

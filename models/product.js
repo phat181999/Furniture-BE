@@ -14,7 +14,6 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.belongsTo(TypeProduct, {foreignKey: "productFlowTypeID", as:"idProductFlowType"})
       this.hasMany(Images, {foreignKey: 'imagesProductID', as: 'idImagesProduct'})
-      this.belongsTo(User,  {foreignKey: 'adminProductId', as: 'idAdminProduct'})
       this.hasMany(carts, {foreignKey: 'productCartId', as: 'idOfProduct'})
     }
   };
