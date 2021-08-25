@@ -51,18 +51,25 @@ const getOneUser = async (req, res) =>
 };
 const updateuser = async (req, res) =>
 {
-  const { id } = req.params;
-  const { fullname, account, password, address, phone } = req.body;
+ 
+    const { file } = req;
+    const urlImage = file ? `http://localhost:4000/${file.path}` : req.body.avatarUser;
+    const { fullname, account, address, phone } = req.body;
   const updateUsers = await User.update(
-    { fullname, account, password, address, phone },
-    { where: { id } }
+    {
+       fullname,
+       address,
+      phone, 
+      avatar: urlImage, 
+    },
+    { where: { account } }
   );
   try
   {
-    res.status(200).send(updateUsers);
+    res.status(200).send( {message: "Update Thành Công",updateUsers});
   } catch (err)
   {
-    res.status(200).send(err);
+    res.status(400).send({message: "Có Lỗi Xảy Ra"});
   }
 };
 const loginUsers = async (req, res) =>
