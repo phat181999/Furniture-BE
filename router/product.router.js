@@ -7,7 +7,8 @@ const {
   updateProducts,
   deleteProducts,
   fillPriceMax,
-  fillPriceMin
+  fillPriceMin,
+  paginationProducts
 } = require("../controller/product.controller");
 const {uploadImage} = require('../middlewares/upload/upload-image');
 const {AlotOfUploadImage} = require('../middlewares/upload/aLotOf-Images');
@@ -21,4 +22,5 @@ productRouter.put('/update-products/:id',authenticate,authorize(['admin']),updat
 productRouter.delete('/delete-products/:id',authenticate,authorize(['admin']),deleteProducts);
 productRouter.get('/get-desc-products',fillPriceMax);
 productRouter.get('/get-asc-products',fillPriceMin);
+productRouter.get('/get-pagination/:page',paginationProducts);
 module.exports = { productRouter };

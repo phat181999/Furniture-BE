@@ -87,6 +87,29 @@ const fillPriceMin = async (req,res) => {
       res.send(err);
       console.log(err);
     }
+};
+const paginationProducts = async(req,res) =>{
+  const pageAsNumber = Number.parseInt(req.params.page);
+  const sizeAsNumber = Number.parseInt(req.query.size);
+
+  let page = 0;
+  if(!Number.isNaN(pageAsNumber) && pageAsNumber > 0){
+    page = pageAsNumber;
+  }
+
+  let size = 6;
+  if(!Number.isNaN(sizeAsNumber) && !(sizeAsNumber > 6) && !(sizeAsNumber < 1)){
+    size = sizeAsNumber;
+  }
+
+  const productsWithCount = await Product.findAndCountAll({
+    limit: size,
+    offset: page * size
+  });
+  res.send({
+    content: productsWithCount.rows,
+    totalPages: Math.ceil(productsWithCount.count / Number.parseInt(size))
+  });
 }
 module.exports = {
   createProducts,
@@ -95,5 +118,6 @@ module.exports = {
   updateProducts,
   deleteProducts,
   fillPriceMin,
-  fillPriceMax
+  fillPriceMax,
+  paginationProducts
 };
