@@ -15,7 +15,7 @@ const {AlotOfUploadImage} = require('../middlewares/upload/aLotOf-Images');
 const { authenticate } = require ('../middlewares/Authenticate/authenticate');
 const { authorize } = require ('../middlewares/Authenticate/authorize');
 
-productRouter.post('/create-products',authenticate,authorize(['admin']),uploadImage('products'),createProducts);
+productRouter.post('/create-products',authenticate,authorize(['admin']),createProducts);
 productRouter.get('/get-all-products',getAllProducts);
 productRouter.get('/get-one-products/:id',getOneProducts);
 productRouter.put('/update-products/:id',authenticate,authorize(['admin']),updateProducts);

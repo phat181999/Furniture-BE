@@ -1,12 +1,26 @@
 const { Product, Images } = require("../models");
+const multer = require("multer");
 
 const createProducts = async (req, res) => {
   const { nameProduct, color, price, description } = req.body;
   try {
-    const { file } = req;
-    const urlImage = `http://localhost:4000/${file.path}`;
+    const storage = multer.diskStorage({
+      destination: function (req, file, cb) {
+          cb(null, './public/uploads/')
+          
+      },
+      filename: function (req, file, cb) {
+          // console.log(file);
+          var datetimestamp = Date.now();
+          cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
+      }
+    });
+    const upload = multer({storage:storage});
+    const uploadPictures = upload.single('products');
+    // const { file } = req;
+    // const urlImage = `http://localhost:4000/${file.path}`;
     const newProducts = await Product.create(
-     { nameProduct, color, price, description, pictures:urlImage},
+     { nameProduct, color, price, description, pictures:uploadPictures},
     // req.body,
     //   {
     //     include:{

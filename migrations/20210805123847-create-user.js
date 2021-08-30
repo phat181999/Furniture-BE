@@ -24,6 +24,9 @@ module.exports = {
         type: Sequelize.STRING,
         defaultValue: "user",
       },
+      fullname: {
+        type: Sequelize.STRING
+      },
       phone: {
         type: Sequelize.INTEGER
       },

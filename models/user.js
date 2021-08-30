@@ -73,6 +73,7 @@ module.exports = (sequelize, DataTypes) => {
           len: [5,100],
         },
     },
+    fullname: DataTypes.STRING,
     address: {
       type: DataTypes.STRING,
       allowNull: 

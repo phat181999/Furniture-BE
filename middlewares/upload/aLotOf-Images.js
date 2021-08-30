@@ -15,12 +15,8 @@ const AlotOfUploadImage = (type) => {
         }
         
     });
-    const upload = multer({
-      storage: storage,
-    }).array('file',20);
-  
-    return upload(type);
-    
+    const upload = multer({storage:storage})
+    return upload.array('products',2)
   };
 
   module.exports = {
