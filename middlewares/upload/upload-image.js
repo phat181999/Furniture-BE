@@ -27,7 +27,6 @@ const uploadImage = (type) => {
   
     return upload.single(type);
 };
-
-  module.exports = {
-    uploadImage,
-  };
+module.exports = {
+  uploadImage,
+};
