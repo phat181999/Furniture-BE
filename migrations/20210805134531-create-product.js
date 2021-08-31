@@ -32,7 +32,7 @@ module.exports = {
         type: Sequelize.FLOAT
       },
       pictures: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING 
       },
       createdAt: {
         allowNull: false,

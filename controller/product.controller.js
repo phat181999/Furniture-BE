@@ -1,26 +1,13 @@
-const { Product, Images } = require("../models");
-const multer = require("multer");
+const { Product, TypeProduct } = require("../models");
+const { Op } = require("sequelize");
 
 const createProducts = async (req, res) => {
   const { nameProduct, color, price, description } = req.body;
   try {
-    const storage = multer.diskStorage({
-      destination: function (req, file, cb) {
-          cb(null, './public/uploads/')
-          
-      },
-      filename: function (req, file, cb) {
-          // console.log(file);
-          var datetimestamp = Date.now();
-          cb(null, file.fieldname + '-' + datetimestamp + '.' + file.originalname.split('.')[file.originalname.split('.').length -1])
-      }
-    });
-    const upload = multer({storage:storage});
-    const uploadPictures = upload.single('products');
-    // const { file } = req;
-    // const urlImage = `http://localhost:4000/${file.path}`;
+    const { file } = req;
+    const urlImage = `http://localhost:4000/${file.path}`;
     const newProducts = await Product.create(
-     { nameProduct, color, price, description, pictures:uploadPictures},
+     { nameProduct, color, price, description, pictures:urlImage},
     // req.body,
     //   {
     //     include:{
@@ -124,6 +111,36 @@ const paginationProducts = async(req,res) =>{
     content: productsWithCount.rows,
     totalPages: Math.ceil(productsWithCount.count / Number.parseInt(size))
   });
+};
+const filterColor = async(req,res) =>{
+  const { color } = req.query;
+  try{
+    if(color){
+      const getQuery = await Product.findAll({
+        where:{
+          color:{
+            [Op.like]: `%${color}%`  
+          }
+        },
+        include: [
+          {
+            model: TypeProduct,
+            as: 'idManageTypeProduct'
+          }
+        ]
+      })
+      res.send(getQuery)
+    }
+    else{
+      const getAll = await Product.findAll({});
+      res.send(getAll);
+    }
+  }
+  catch(err){
+    res.status(500).send(err);
+    console.log(err);
+  }
+
 }
 module.exports = {
   createProducts,
@@ -133,5 +150,6 @@ module.exports = {
   deleteProducts,
   fillPriceMin,
   fillPriceMax,
-  paginationProducts
+  paginationProducts,
+  filterColor
 };

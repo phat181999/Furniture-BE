@@ -42,7 +42,7 @@ module.exports = (sequelize, DataTypes) => {
           len: [5,100],
         },
     },
-    pictures: DataTypes.STRING,
+    pictures: DataTypes.STRING ,
     description: {
       type: DataTypes.STRING,
       allowNull: 
