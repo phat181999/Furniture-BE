@@ -8,6 +8,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      colorProductsID: {
+        type: Sequelize.INTEGER,
+        references:{
+          model: 'colors',
+          key: 'id'
+        }
+      },
       productFlowTypeID: {
         type: Sequelize.INTEGER,
         references:{
