@@ -202,8 +202,7 @@ const filterColor = async(req,res) =>{
           [Op.like]: `%${color}%`,
         }
       }
-    });
-
+    }); 
     try{
       if(productsWithCount){
         res.send({
