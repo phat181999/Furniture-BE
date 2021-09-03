@@ -2,19 +2,12 @@ const { Product, TypeProduct } = require("../models");
 const { Op } = require("sequelize");
 
 const createProducts = async (req, res) => {
-  const { nameProduct, color, price, description } = req.body;
+  const { nameProduct, color, price, description,productFlowTypeID } = req.body;
   try {
     const { file } = req;
     const urlImage = `http://localhost:4000/${file.path}`;
     const newProducts = await Product.create(
-     { nameProduct, color, price, description, pictures:urlImage},
-    // req.body,
-    //   {
-    //     include:{
-    //       model:Images,
-    //       as: 'idImagesProduct'
-    //     }
-    //   },
+     { nameProduct, color, price, description, pictures:urlImage,productFlowTypeID},
     );
     res.status(200).send(newProducts);
   } catch (err) {
@@ -93,8 +86,8 @@ const paginationProducts = async(req,res) =>{
   const pageAsNumber = Number.parseInt(req.params.page);
   const sizeAsNumber = Number.parseInt(req.query.size);
 
-  let page = 0;
-  if(!Number.isNaN(pageAsNumber) && pageAsNumber > 0){
+  let page = 1;
+  if(!Number.isNaN(pageAsNumber) && pageAsNumber > 1){
     page = pageAsNumber;
   }
 
@@ -105,7 +98,7 @@ const paginationProducts = async(req,res) =>{
 
   const productsWithCount = await Product.findAndCountAll({
     limit: size,
-    offset: page * size
+    offset: (page-1) * size
   });
   res.send({
     content: productsWithCount.rows,
@@ -141,7 +134,23 @@ const filterColor = async(req,res) =>{
     console.log(err);
   }
 
+};
+
+const getFlowTypeProduct = async(req,res) =>{
+  const getFlow = await TypeProduct.findByPk(req.params.idType,{
+    include: [{
+      model: Product,
+      as: 'productFlowTypeID',
+    },]
+  })
+  try{
+    res.send(getFlow)
+  }
+  catch(err){
+    res.send(err)
+  }
 }
+
 module.exports = {
   createProducts,
   getAllProducts,
@@ -151,5 +160,6 @@ module.exports = {
   fillPriceMin,
   fillPriceMax,
   paginationProducts,
-  filterColor
+  filterColor,
+  getFlowTypeProduct
 };

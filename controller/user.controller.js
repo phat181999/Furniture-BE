@@ -58,13 +58,14 @@ const updateuser = async (req, res) =>
     const { file } = req;
     const urlImage = file ? `http://localhost:4000/${file.path}` : req.body.avatarUser;
     const { fullname, account, address, phone,email } = req.body;
+
   const updateUsers = await User.update(
     {
        fullname,
        email,
        address,
-      phone, 
-      avatar: urlImage, 
+       phone, 
+       avatar: urlImage, 
     },
     { where: { account } }
   );

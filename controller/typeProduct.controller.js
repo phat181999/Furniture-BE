@@ -4,7 +4,7 @@ const createTypeProduct = async(req,res) =>{
     const {nameTypeProduct} = req.body;
     try{
         const { file } = req;
-        const urlImage = `http://localhost:5000/${file.path}`;
+        const urlImage = `http://localhost:4000/${file.path}`;
         const newType = await TypeProduct.create({nameTypeProduct,imagesTypeProduct:urlImage});
         res.status(200).send(newType);
     }
@@ -44,10 +44,11 @@ const updateTypeProduct = async(req,res)=>{
     }
 };
 const deleTypeProduct = async(req,res)=>{
-    const {id} = req.params;
-    const dele = await TypeProduct.destroy({where:{id}});
+  
     try{
-        res.status(200).send(dele);
+        const {id} = req.params;
+        const dele = await TypeProduct.destroy({where:{id}});
+        res.status(200).send({mess:"xoa thanh cong"});
     }
     catch(err){
         res.status(200).send(err);
