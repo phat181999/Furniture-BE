@@ -10,7 +10,7 @@ const {
   fillPriceMin,
   paginationProducts,
   filterColor,
-  getFlowTypeProduct
+  
 } = require("../controller/product.controller");
 const {uploadImage} = require('../middlewares/upload/upload-image');
 const {uploadPictures} = require('../middlewares/upload/aLotOf-Images');
@@ -19,14 +19,14 @@ const { authorize } = require ('../middlewares/Authenticate/authorize');
 
 
 
-productRouter.post('/create-products',authenticate,authorize(['admin']),uploadImage("products"),createProducts);
+productRouter.post('/create-products',authenticate,authorize(['admin']),uploadImage('products'),createProducts);
 productRouter.get('/get-all-products',getAllProducts);
 productRouter.get('/get-one-products/:id',getOneProducts);
 productRouter.put('/update-products/:id',authenticate,authorize(['admin']),updateProducts);
 productRouter.delete('/delete-products/:id',authenticate,authorize(['admin']),deleteProducts);
-productRouter.get('/get-desc-products',fillPriceMax);
-productRouter.get('/get-asc-products',fillPriceMin);
-productRouter.get('/get-pagination/:page',paginationProducts);
-productRouter.get('/get-filter-color',filterColor);
-productRouter.get('/get-flow-type-product/:idType',getFlowTypeProduct);
+productRouter.get('/get-desc-products/:page',fillPriceMax); // filter từ cao tới thấp theo phân trang
+productRouter.get('/get-asc-products/:page',fillPriceMin); // filter từ thấp tới cao theo phân trang
+productRouter.get('/get-pagination/:page',paginationProducts); // phân trang
+productRouter.get('/get-filter-color/:color/page/:page',filterColor); // phân trang theo màu
+
 module.exports = { productRouter };

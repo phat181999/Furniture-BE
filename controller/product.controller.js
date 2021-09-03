@@ -2,12 +2,19 @@ const { Product, TypeProduct } = require("../models");
 const { Op } = require("sequelize");
 
 const createProducts = async (req, res) => {
-  const { nameProduct, color, price, description,productFlowTypeID } = req.body;
+  const { nameProduct, color, price, description, productFlowTypeID } = req.body;
   try {
     const { file } = req;
     const urlImage = `http://localhost:4000/${file.path}`;
     const newProducts = await Product.create(
-     { nameProduct, color, price, description, pictures:urlImage,productFlowTypeID},
+     { nameProduct, color, price, description, pictures:urlImage, productFlowTypeID},
+    // req.body,
+    //   {
+    //     include:{
+    //       model:Images,
+    //       as: 'idImagesProduct'
+    //     }
+    //   },
     );
     res.status(200).send(newProducts);
   } catch (err) {
@@ -55,26 +62,90 @@ const deleteProducts = async (req, res) => {
   }
 };
 const fillPriceMax = async (req,res) => {
-    const fillMax = await Product.findAll({
-        order: [["price","DESC"]]
-    });
-    try{
-      if (fillMax) {
-        res.send(fillMax);
-      }
+
+  const pageAsNumber = Number.parseInt(req.params.page);
+  const sizeAsNumber = Number.parseInt(req.query.size);
+
+  // số trang bắt đầu
+  let page = 0;
+  if(!Number.isNaN(pageAsNumber) && pageAsNumber > 0){
+    page = pageAsNumber;
+  }
+
+  // số sản phẩm trong 1 trang
+  let size = 6;
+  if(!Number.isNaN(sizeAsNumber) && !(sizeAsNumber > 6) && !(sizeAsNumber < 1)){
+    size = sizeAsNumber;
+  }
+  const productsWithCount = await Product.findAndCountAll({
+    limit: size,
+    offset: page * size,
+    order: [["price","DESC"]]
+  });
+    
+  try{
+    if(productsWithCount){
+      res.send({
+        content: productsWithCount.rows,
+        totalPages: Math.ceil(productsWithCount.count / Number.parseInt(size))
+      });
     }
-    catch (err){
-      res.send(err);
-      console.log(err);
+    else{
+      res.send({
+        content: productsWithCount.rows,
+        totalPages: Math.ceil(productsWithCount.count / Number.parseInt(size))
+      });
+      const getAll = await Product.findAll({
+        
+      });
+      res.status(200).send(getAll);
     }
+  }
+  catch (err){
+    res.send(err);
+    console.log(err);
+  }
+
 };
+// phân trang theo gia 1
 const fillPriceMin = async (req,res) => {
-    const fillMin = await Product.findAll({
+    const pageAsNumber = Number.parseInt(req.params.page);
+    const sizeAsNumber = Number.parseInt(req.query.size);
+
+    // số trang bắt đầu
+    let page = 0;
+    if(!Number.isNaN(pageAsNumber) && pageAsNumber > 0){
+      page = pageAsNumber;
+    }
+
+     // số sản phẩm trong 1 trang
+    let size = 6;
+    if(!Number.isNaN(sizeAsNumber) && !(sizeAsNumber > 6) && !(sizeAsNumber < 1)){
+      size = sizeAsNumber;
+    }
+
+    const productsWithCount = await Product.findAndCountAll({
+      limit: size,
+      offset: page * size,
       order: [["price","ASC"]]
     });
+
     try{
-      if (fillMin) {
-        res.send(fillMin);
+      if(productsWithCount){
+        res.send({
+          content: productsWithCount.rows,
+          totalPages: Math.ceil(productsWithCount.count / Number.parseInt(size))
+        });
+      }
+      else{
+        res.send({
+          content: productsWithCount.rows,
+          totalPages: Math.ceil(productsWithCount.count / Number.parseInt(size))
+        });
+        const getAll = await Product.findAll({
+          
+        });
+        res.status(200).send(getAll);
       }
     }
     catch (err){
@@ -82,6 +153,7 @@ const fillPriceMin = async (req,res) => {
       console.log(err);
     }
 };
+// phân trang
 const paginationProducts = async(req,res) =>{
   const pageAsNumber = Number.parseInt(req.params.page);
   const sizeAsNumber = Number.parseInt(req.query.size);
@@ -105,51 +177,55 @@ const paginationProducts = async(req,res) =>{
     totalPages: Math.ceil(productsWithCount.count / Number.parseInt(size))
   });
 };
+// lọc theo màu
 const filterColor = async(req,res) =>{
-  const { color } = req.query;
-  try{
-    if(color){
-      const getQuery = await Product.findAll({
-        where:{
-          color:{
-            [Op.like]: `%${color}%`  
-          }
-        },
-        include: [
-          {
-            model: TypeProduct,
-            as: 'idManageTypeProduct'
-          }
-        ]
-      })
-      res.send(getQuery)
-    }
-    else{
-      const getAll = await Product.findAll({});
-      res.send(getAll);
-    }
-  }
-  catch(err){
-    res.status(500).send(err);
-    console.log(err);
-  }
+  
+    const pageAsNumber = Number.parseInt(req.params.page);
+    const sizeAsNumber = Number.parseInt(req.query.size);
+    const { color } = req.params;
 
+    let page = 0;
+    if(!Number.isNaN(pageAsNumber) && pageAsNumber > 0){
+      page = pageAsNumber;
+    }
+
+    let size = 6;
+    if(!Number.isNaN(sizeAsNumber) && !(sizeAsNumber > 6) && !(sizeAsNumber < 1)){
+      size = sizeAsNumber;
+    }
+
+    const productsWithCount = await Product.findAndCountAll({
+      limit: size,
+      offset: page * size,
+      where:{
+        color: {
+          [Op.like]: `%${color}%`,
+        }
+      }
+    }); 
+    try{
+      if(productsWithCount){
+        res.send({
+          content: productsWithCount.rows,
+          totalPages: Math.ceil(productsWithCount.count / Number.parseInt(size))
+        });
+      }
+      else{
+        res.send({
+          content: productsWithCount.rows,
+          totalPages: Math.ceil(productsWithCount.count / Number.parseInt(size))
+        });
+        const getAll = await Product.findAll({
+          
+        });
+        res.status(200).send(getAll);
+      }
+    }
+    catch(err){
+      res.status(500).send(err);
+      console.log(err);
+    }
 };
-
-const getFlowTypeProduct = async(req,res) =>{
-  const getFlow = await TypeProduct.findByPk(req.params.idType,{
-    include: [{
-      model: Product,
-      as: 'productFlowTypeID',
-    },]
-  })
-  try{
-    res.send(getFlow)
-  }
-  catch(err){
-    res.send(err)
-  }
-}
 
 module.exports = {
   createProducts,
@@ -161,5 +237,5 @@ module.exports = {
   fillPriceMax,
   paginationProducts,
   filterColor,
-  getFlowTypeProduct
+  
 };

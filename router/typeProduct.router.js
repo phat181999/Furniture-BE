@@ -6,6 +6,7 @@ const {
   getOneTypeProduct,
   updateTypeProduct,
   deleTypeProduct,
+  getFlowTypeProduct
 } = require("../controller/typeProduct.controller");
 const { authenticate } = require ('../middlewares/Authenticate/authenticate');
 const { authorize } = require ('../middlewares/Authenticate/authorize');
@@ -16,5 +17,6 @@ typeProductRouter.get('/get-all-type-product',getAllTypeProduct);
 typeProductRouter.get('/get-one-type-product/:id',getOneTypeProduct);
 typeProductRouter.put('/update-type-product/:id',authenticate,authorize(['admin']),updateTypeProduct);
 typeProductRouter.delete('/delete-type-product/:id',authenticate,authorize(['admin']),deleTypeProduct);
+typeProductRouter.get('/get-flow-type-product/:idType/page/:page',getFlowTypeProduct); // products lấy theo typeProducts
 
 module.exports = {typeProductRouter}
