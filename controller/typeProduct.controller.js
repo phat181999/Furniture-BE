@@ -51,7 +51,7 @@ const deleTypeProduct = async(req,res)=>{
         res.status(200).send({mess:"xoa thanh cong"});
     }
     catch(err){
-        res.status(200).send(err);
+        res.status(400).send({mess:"Bạn không thể xóa danh mục này, vì có sản phẩm đang tồn tại !"});
     }
 };
 // lọc theo typeProducts

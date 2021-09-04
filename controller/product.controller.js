@@ -23,7 +23,7 @@ const createProducts = async (req, res) => {
   }
 };
 const getAllProducts = async (req, res) => {
-  const getAll = await Product.findAll({include:["idImagesProduct"]});
+  const getAll = await Product.findAll({include:{model:TypeProduct,as:"flowTypeProducts"}}); //include:["idImagesProduct"]
   try {
     res.status(200).send(getAll);
   } catch (err) {
