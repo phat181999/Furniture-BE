@@ -10,6 +10,7 @@ const {
   fillPriceMin,
   paginationProducts,
   filterColor,
+  getFlowTypeProduct
   
 } = require("../controller/product.controller");
 const {uploadImage} = require('../middlewares/upload/upload-image');
@@ -28,5 +29,6 @@ productRouter.get('/get-desc-products/:page',fillPriceMax); // filter từ cao t
 productRouter.get('/get-asc-products/:page',fillPriceMin); // filter từ thấp tới cao theo phân trang
 productRouter.get('/get-pagination/:page',paginationProducts); // phân trang
 productRouter.get('/get-filter-color/:color/page/:page',filterColor); // phân trang theo màu
+productRouter.get('/get-flow-type-product/:idType/page/:page',getFlowTypeProduct); // products lấy theo typeProducts
 
 module.exports = { productRouter };
