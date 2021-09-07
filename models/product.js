@@ -10,12 +10,13 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({TypeProduct,Images,carts,color}) {
+    static associate({TypeProduct,Images,checkOut,colors,User}) {
       // define association here
       this.belongsTo(TypeProduct, {foreignKey: "productFlowTypeID", as:"flowTypeProducts"})
       this.hasMany(Images, {foreignKey: 'imagesProductID', as: 'idImagesProduct'})
-      this.hasMany(carts, {foreignKey: 'productCartId', as: 'idOfProduct'})
-      this.belongsTo(color, {foreignKey: 'colorProductsID', as: 'colorFlowProducts'})
+      this.hasMany(checkOut, {foreignKey: 'productCheckoutId', as: 'idOfProduct'})
+      this.belongsTo(colors, {foreignKey: 'colorProductsID', as: 'colorFlowProducts'})
+      this.belongsTo(User , {foreignKey: 'userProductsId', as: 'productsUser'})
     }
   };
   Product.init({
@@ -43,7 +44,11 @@ module.exports = (sequelize, DataTypes) => {
           len: [5,100],
         },
     },
-    pictures: DataTypes.STRING ,
+    pictures: [{
+      type:DataTypes.STRING,
+      URL: String,
+      filename: String
+    }] ,
     description: {
       type: DataTypes.STRING,
       allowNull: 
@@ -71,7 +76,19 @@ module.exports = (sequelize, DataTypes) => {
           notEmpty: true,
           len: [5,20],
         },
-    }
+    },
+    quantityProducts: {
+      type:DataTypes.FLOAT,
+      allowNull: 
+        {
+          msg: 'Please enter your quantity Products'
+        },
+      validate: 
+        {
+          notEmpty: true,
+          len: [1,20],
+        },
+    },
     }, {
     sequelize,
     modelName: 'Product',

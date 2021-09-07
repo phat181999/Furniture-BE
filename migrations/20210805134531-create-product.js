@@ -8,6 +8,13 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      userProductsId: {
+        type: Sequelize.INTEGER,
+        references:{
+          model: 'users',
+          key: 'id'
+        }
+      },
       colorProductsID: {
         type: Sequelize.INTEGER,
         references:{
@@ -34,6 +41,9 @@ module.exports = {
       },
       color: {
         type: Sequelize.STRING
+      },
+      quantityProducts: {
+        type: Sequelize.INTEGER
       },
       price: {
         type: Sequelize.FLOAT

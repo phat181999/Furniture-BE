@@ -1,20 +1,18 @@
-const { Product, TypeProduct } = require("../models");
+const { Product,TypeProduct } = require("../models");
 const { Op } = require("sequelize");
+const { cloudinary } = require('../untils/cloundinary');
 
 const createProducts = async (req, res) => {
-  const { nameProduct, color, price, description, productFlowTypeID } = req.body;
+  const { nameProduct, color, price, description, productFlowTypeID, quantityProducts } = req.body;
   try {
-    const { file } = req;
-    const urlImage = `http://localhost:4000/${file.path}`;
+    const result = await cloudinary.uploader.upload(req.file.path,{
+      public_id:'products',
+      with: 500,
+      height: 500,
+      crop: 'fill'
+    })
     const newProducts = await Product.create(
-     { nameProduct, color, price, description, pictures:urlImage, productFlowTypeID},
-    // req.body,
-    //   {
-    //     include:{
-    //       model:Images,
-    //       as: 'idImagesProduct'
-    //     }
-    //   },
+     { nameProduct, color, price, description, pictures:result.url, productFlowTypeID, quantityProducts},
     );
     res.status(200).send(newProducts);
   } catch (err) {
@@ -23,7 +21,7 @@ const createProducts = async (req, res) => {
   }
 };
 const getAllProducts = async (req, res) => {
-  const getAll = await Product.findAll({include:["idImagesProduct"]});
+  const getAll = await Product.findAll({});
   try {
     res.status(200).send(getAll);
   } catch (err) {
@@ -41,9 +39,9 @@ const getOneProducts = async (req, res) => {
 };
 const updateProducts = async (req, res) => {
   const { id } = req.params;
-  const { nameProduct, color, price, description } = req.body;
+  const { nameProduct, color, price, description, productFlowTypeID, quantityProducts } = req.body;
   const updateUsers = await Product.update(
-    { nameProduct, color, price, description },
+    { nameProduct, color, price, description, productFlowTypeID, quantityProducts },
     { where: { id } }
   );
   try {
@@ -226,7 +224,50 @@ const filterColor = async(req,res) =>{
       console.log(err);
     }
 };
-
+const getSearch = async(req,res) =>{
+  let {search} = req.query;
+  try{
+    if(search){
+      search = decodeURIComponent(search);
+      const getall = await Product.findAll({
+        where:{
+          [Op.or]:[
+            {
+              nameProduct:{
+                [Op.like]: `%${search}%`
+              }
+            },
+            {
+              color:{
+                [Op.like]: `%${search}%`
+              }
+            },
+            {
+              "$flowTypeProducts.nameTypeProduct$":{
+                [Op.like]: `%${search}%`
+              }
+            }
+          ]
+        },
+        include: [
+          {
+            model: TypeProduct,
+            as: "flowTypeProducts",
+          }
+        ]
+      })
+      res.send(getall)
+    }
+    else{
+      const getAll = await Product.findAll({});
+      res.status(200).send(getAll);
+    }
+  } 
+  catch(err){
+    res.status(500).send(err);
+    console.log(err);
+  } 
+}
 module.exports = {
   createProducts,
   getAllProducts,
@@ -237,5 +278,5 @@ module.exports = {
   fillPriceMax,
   paginationProducts,
   filterColor,
-  
+  getSearch
 };

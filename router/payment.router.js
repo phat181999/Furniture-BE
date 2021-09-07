@@ -1,7 +1,8 @@
 const express  = require("express");
 const paymentRouter = express.Router();
-const {payMoney} = require('../controller/payment.controller');
+const { payMoneyStripe,payMentPaypal } = require('../controller/payment.controller');
 
-paymentRouter.post('/pay-ment',paymentRouter);
+paymentRouter.post('/pay-ment-stripe',payMoneyStripe);
+paymentRouter.post('/pay-ment-paypal',payMentPaypal);
 
 module.exports = {paymentRouter}

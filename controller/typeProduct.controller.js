@@ -4,7 +4,7 @@ const createTypeProduct = async(req,res) =>{
     const {nameTypeProduct} = req.body;
     try{
         const { file } = req;
-        const urlImage = `http://localhost:5000/${file.path}`;
+        const urlImage = file ? `http://localhost:5000/${file.path}` : '';
         const newType = await TypeProduct.create({nameTypeProduct,imagesTypeProduct:urlImage});
         res.status(200).send(newType);
     }

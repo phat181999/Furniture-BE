@@ -15,10 +15,10 @@ module.exports = {
           key: 'id'
         }
       },
-      checkOutCartId: {
+      productCheckoutId: {
         type: Sequelize.INTEGER,
         references: {
-          model: 'carts',
+          model: 'products',
           key : 'id'
         }
       },
@@ -29,6 +29,14 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       numberPhone: {
+        type: Sequelize.INTEGER
+      },
+      checkoutStatus: {
+        type: Sequelize.STRING,
+        // values: ['success', 'fail', 'pending'],
+        defaultValue: 'pending'
+      },
+      quantityCheckOut: {
         type: Sequelize.INTEGER
       },
       totalMoney: {

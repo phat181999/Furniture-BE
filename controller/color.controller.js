@@ -1,9 +1,9 @@
-const { color } = require('../models');
+const { colors } = require('../models');
 
 const createColors = async(req,res) =>{
     const { nameColor, colorCode} = req.body;
     try{
-        const newColors = await color.create({nameColor, colorCode});
+        const newColors = await colors.create({nameColor, colorCode});
         res.status(200).send(newColors);
     }
     catch(err){
@@ -11,7 +11,7 @@ const createColors = async(req,res) =>{
     }
 };
 const getAllColors = async(req,res) =>{
-    const getAll = await color.findAll({});
+    const getAll = await colors.findAll({});
     try{
         res.status(200).send(getAll);
     }
@@ -22,7 +22,7 @@ const getAllColors = async(req,res) =>{
 };
 const getOneColors= async(req,res) =>{
     const {id} = req.params;
-    const getOne = await color.findOne({where:{id}});
+    const getOne = await colors.findOne({where:{id}});
     try{
         res.status(200).send(getOne);
     }
@@ -33,7 +33,7 @@ const getOneColors= async(req,res) =>{
 const updateColors = async(req,res)=>{
     const {id} = req.params;
     const {nameColor, colorCode} = req.body;
-    const updateNews = await TypeProduct.update({nameColor, colorCode},{where:{id}});
+    const updateNews = await colors.update({nameColor, colorCode},{where:{id}});
     try{
         res.status(200).send(updateNews);
     }
@@ -43,7 +43,7 @@ const updateColors = async(req,res)=>{
 };
 const deleColors = async(req,res)=>{
     const {id} = req.params;
-    const dele = await color.destroy({where:{id}});
+    const dele = await colors.destroy({where:{id}});
     try{
         res.status(200).send(dele);
     }
