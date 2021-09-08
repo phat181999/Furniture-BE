@@ -6,7 +6,6 @@ var gravatarUrl = require('gravatar');
 const createUsers = async (req, res) => {
   const { fullname,account, password, address, phone,type,email } = req.body;
   try {   
-    
     const { file } = req;
     const emailAvatar = gravatarUrl.url(email);
     const urlImage = file ?`http://localhost:5000/${file.path}` : emailAvatar;
@@ -52,14 +51,14 @@ const getOneUser = async (req, res) =>
     res.status(200).send(err);
   }
 };
-const updateuser = async (req, res) =>
-{
- 
+const updateuser = async (req, res) => {
     const { file } = req;
     const urlImage = file ? `http://localhost:4000/${file.path}` : req.body.avatarUser;
     const { fullname, account, address, phone,email } = req.body;
 
+
   const updateUsers = await User.update(
+
     {
        fullname,
        email,
@@ -68,17 +67,16 @@ const updateuser = async (req, res) =>
        avatar: urlImage, 
     },
     { where: { account } }
-  );
-  try
-  {
-    res.status(200).send( {message: "Update Thành Công",updateUsers});
-  } catch (err)
-  {
-    res.status(400).send({message: "Có Lỗi Xảy Ra"});
-  }
+    );
+    try
+    {
+      res.status(200).send( {message: "Update Thành Công",updateUsers});
+    } catch (err)
+    {
+      res.status(400).send({message: "Có Lỗi Xảy Ra"});
+    }
 };
-const loginUsers = async (req, res) =>
-{
+const loginUsers = async (req, res) => {
   const { account, password } = req.body;
   const user = await User.findOne({
     where: {

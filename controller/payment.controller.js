@@ -1,18 +1,73 @@
+var paypal = require('paypal-rest-sdk'); //
+const SECRET_KEY = "sk_test_51I0TT8HjF02vcO1sT2TLp7lEvfl5pMUTqmP2TvM8BgXrxur8XmD4rSe5DVHDN63zXUketgJfk51rfwmYZqIveFRg00ORCMPmzj"; // payment stripe
+const stripe = require("stripe")(SECRET_KEY);
 
-// const stripe = require("stripe")(SECRET_KEY);
-const PUBLISHABLE_KEY = "pk_test_51I0TT8HjF02vcO1sn09k8ZYy3NdOil1vEuUW2xSJmwCDMIDktH4487DVzgt6sSsN3giGOvGx3GYkQDzxNPy6h3zc00i6NAuuoh";
-const SECRET_KEY = "sk_test_51I0TT8HjF02vcO1sT2TLp7lEvfl5pMUTqmP2TvM8BgXrxur8XmD4rSe5DVHDN63zXUketgJfk51rfwmYZqIveFRg00ORCMPmzj";
-
-const payMoney = async (req,res) =>{
-    const {email} = req.body;
-    const paymentIntent = await stripe.paymentIntent.create({
-        amount: 5000,
-        currency: 'usd',
-        metadata: {integration_check: 'accept_a_payment'},
-        receipt_email: email,
-    });
-
-    res.json({'client_secret': paymentIntent['client_secret']})
+// payment Stripe
+const payMoneyStripe = async (req,res) =>{
+    stripe.charges.create({
+        amount: 2000,
+        currency: 'USD',
+        source: 'tok_mastercard',
+        metadata: {'order_id': '6736'}
+    })
+    .then((charges)=>{
+        res.send(charges)
+    })
+    .catch((err) =>{
+        res.send(err)
+    })
 };
+paypal.configure({
+    'mode': 'sandbox', //sandbox or live
+    'client_id': 'ASoOGTRYUC8YWPXfLeA9q-KG4m6aG0XmV7SOismiWHv72MTh0mvPEapDIqLLjnQqpEa_fCQpRB2dc_4U',
+    'client_secret': 'ENGKXtoVVm4mcviwtkJ4H-EripcLnUdsxga1wjpCDfjbS6v6jtkK4bgHPbpR1bRjD7jlnZtXLhSY9WUG'
+}); // payment paypal
+// payment Paypal
+const payMentPaypal = async(req,res) =>{
+    var create_payment_json = {
+        "intent": "sale",
+        "payer": {
+            "payment_method": "paypal"
+        },
+        "redirect_urls": {
+            "return_url": "https://localhost:4000//success",
+            "cancel_url": "https://localhost:4000//cancel"
+        },
+        "transactions": [{
+            // "item_list": {
+            //     "items": [{
+            //         "name": "asdsad",
+            //         "sku": "01",
+            //         "price": "1.00",
+            //         "currency": "USD",
+            //         "quantity": 1
+            //     }]
+            // },
+            "amount": {
+                "currency": "USD",
+                "total": "1.00"
+            },
+            "description": "This is the payment description."
+        }]
+    };
+    
+    
+    paypal.payment.create(create_payment_json, function (error, payment) {
+        if (error) {
+            throw error;
+        } else {
+            console.log("Create Payment Response");
+            console.log(payment);
+            //sau khi thành công sẽ chuyển tời đường link cho người dùng thanh toán như sau
 
-module.exports = {payMoney}
+            //     href: 'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=EC-2BG204548V0357134',
+            //     rel: 'approval_url',
+            //     method: 'REDIRECT'
+        }
+    });
+};
+// payment Momo
+
+
+
+module.exports = {payMoneyStripe,payMentPaypal}

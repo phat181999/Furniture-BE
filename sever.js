@@ -13,6 +13,7 @@ app.use("/public", express.static(publicPathDirectory));
 
 app.use('/api', rootRouter);
 
+
 app.listen(4000, async () =>
 {
     console.log('suucess localhost:4000');

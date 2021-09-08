@@ -19,7 +19,7 @@ const uploadPictures = (type)=>{
     });
 
     const upload = multer({storage:storage})
-    return upload.any('products')(type), (req,res) => {
+    return upload.array('products')(type), (req,res) => {
         res.send("done");
     }
 }
