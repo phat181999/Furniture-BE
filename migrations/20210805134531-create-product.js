@@ -39,9 +39,6 @@ module.exports = {
       description: {
         type: Sequelize.STRING(1000)
       },
-      color: {
-        type: Sequelize.STRING
-      },
       quantityProducts: {
         type: Sequelize.INTEGER
       },

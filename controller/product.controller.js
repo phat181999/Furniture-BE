@@ -3,7 +3,7 @@ const { Op } = require("sequelize");
 const { cloudinary } = require('../untils/cloundinary');
 
 const createProducts = async (req, res) => {
-  const { nameProduct, color, price, description, productFlowTypeID, quantityProducts } = req.body;
+  const { nameProduct, price, description, productFlowTypeID, quantityProducts,colorProductsID } = req.body;
   try {
     const result = await cloudinary.uploader.upload(req.file.path,{
       public_id:'products',
@@ -12,7 +12,7 @@ const createProducts = async (req, res) => {
       crop: 'fill'
     })
     const newProducts = await Product.create(
-     { nameProduct, color, price, description, pictures:result.url, productFlowTypeID, quantityProducts},
+     { nameProduct, colorProductsID, price, description, pictures:result.url, productFlowTypeID, quantityProducts},
     );
     res.status(200).send(newProducts);
   } catch (err) {
@@ -40,9 +40,25 @@ const getOneProducts = async (req, res) => {
 };
 const updateProducts = async (req, res) => {
   const { id } = req.params;
-  const { nameProduct, color, price, description, productFlowTypeID, quantityProducts } = req.body;
+   const { file } = req;
+   const { nameProduct, colorProductsID, price, description, productFlowTypeID, quantityProducts,products } = req.body;
+
+
+  let image =""
+  if(file){
+    const upload= await cloudinary.uploader.upload(file.path,{
+      public_id:'products',
+      with: 500,
+      height: 500,
+      crop: 'fill'
+    })
+    image=upload.url
+  }else{
+    image=products
+  }
+
   const updateUsers = await Product.update(
-    { nameProduct, color, price, description, productFlowTypeID, quantityProducts },
+    { nameProduct, colorProductsID, price, description, productFlowTypeID, quantityProducts,pictures:image },
     { where: { id } }
   );
   try {
@@ -181,7 +197,7 @@ const filterColor = async(req,res) =>{
   
     const pageAsNumber = Number.parseInt(req.params.page);
     const sizeAsNumber = Number.parseInt(req.query.size);
-    const { color } = req.params;
+    const { colorID } = req.params;
 
     let page = 0;
     if(!Number.isNaN(pageAsNumber) && pageAsNumber > 0){
@@ -197,9 +213,7 @@ const filterColor = async(req,res) =>{
       limit: size,
       offset: page * size,
       where:{
-        color: {
-          [Op.like]: `%${color}%`,
-        }
+        colorProductsID:colorID
       }
     }); 
     try{
@@ -329,7 +343,7 @@ module.exports = {
   paginationProducts,
   filterColor,
 
-  getSearch
+  getSearch,
 
   getFlowTypeProduct
 
