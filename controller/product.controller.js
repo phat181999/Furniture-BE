@@ -1,4 +1,4 @@
-const { Product,TypeProduct } = require("../models");
+const { Product,TypeProduct,colors } = require("../models");
 const { Op } = require("sequelize");
 const { cloudinary } = require('../untils/cloundinary');
 
@@ -69,9 +69,11 @@ const updateProducts = async (req, res) => {
 };
 const deleteProducts = async (req, res) => {
   const { id } = req.params;
-  const deleUsers = await Product.destroy({ where: { id } });
+  
   try {
-    res.status(200).send(deleUsers, `${id}`);
+    const deleUsers = await Product.destroy({ where: { id } });
+
+    deleUsers &&  res.status(200).send({message:"xoa thanh cong"});
   } catch (err) {
     res.status(200).send(err);
   }
@@ -185,7 +187,8 @@ const paginationProducts = async(req,res) =>{
 
   const productsWithCount = await Product.findAndCountAll({
     limit: size,
-    offset: (page) * size
+    offset: (page) * size,
+    include:{model:colors,as:"colorFlowProducts"}
   });
   res.send({
     content: productsWithCount.rows,
@@ -212,6 +215,7 @@ const filterColor = async(req,res) =>{
     const productsWithCount = await Product.findAndCountAll({
       limit: size,
       offset: page * size,
+      include:{model:colors,as:"colorFlowProducts"},
       where:{
         colorProductsID:colorID
       }
@@ -305,7 +309,7 @@ const getFlowTypeProduct = async(req,res) =>{
   const productsWithCount = await Product.findAndCountAll({
       limit: size,
       offset: page * size,  
-      // include model products
+      include:{model:colors,as:"colorFlowProducts"},
       where: { 'productFlowTypeID': req.params.idType },
   });
   try{
