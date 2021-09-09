@@ -44,7 +44,7 @@ const updateProducts = async (req, res) => {
    const { nameProduct, colorProductsID, price, description, productFlowTypeID, quantityProducts,products } = req.body;
 
 
-  let image =""
+  let image 
   if(file){
     const upload= await cloudinary.uploader.upload(file.path,{
       public_id:'products',

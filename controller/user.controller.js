@@ -63,7 +63,7 @@ const updateuser = async (req, res) => {
        fullname:fullname?"":fullname,
        email,
        address:address ? address:"" ,
-       phone:phone ? phone : null, 
+       phone:parseInt(phone) ? phone : null, 
        avatar: urlImage, 
     },
     { where: { account } }
