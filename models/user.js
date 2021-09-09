@@ -63,34 +63,26 @@ module.exports = (sequelize, DataTypes) =>
     },
  
     fullname: DataTypes.STRING,
-
     avatar: DataTypes.STRING,
     type: DataTypes.STRING,
     phone: {
       type: DataTypes.INTEGER,
-      allowNull: 
-        {
-          msg: 'Please enter your phone'
-        },
-      isNumeric: true,
-      validate: 
-        {
-          notEmpty: true,
-          len: [5,100],
-        },
+      // allowNull: 
+      //   {
+      //     msg: 'Please enter your phone'
+      //   },
+      // isNumeric: true,
+      // validate: 
+      //   {
+      //     notEmpty: true,
+      //     len: [5,100],
+      //   },
     },
     fullname: DataTypes.STRING,
     address: {
       type: DataTypes.STRING,
-      allowNull: 
-        {
-          msg: 'Please enter your address'
-        },
-      validate: 
-        {
-          notEmpty: true,
-          len: [5,100],
-        },
+      // allowNull: 
+    
     },
   }, {
     sequelize,
