@@ -17,3 +17,8 @@ if(req.method === 'POST'){
     err
   })
 }
+
+    "productOrderId": [
+            {"productOrderId": 3},
+            {"productOrderId": 4}
+        ]

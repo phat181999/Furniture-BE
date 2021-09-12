@@ -2,6 +2,7 @@ const { User, carts, Product } = require("../models");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 var gravatarUrl = require('gravatar');
+const { cloudinary } = require('../untils/cloundinary');
 
 const createUsers = async (req, res) => {
   const { fullname,account, password, address, phone,type,email } = req.body;
@@ -57,9 +58,9 @@ const updateuser = async (req, res) => {
     const { fullname, account, address, phone,email } = req.body;
     const updateUsers = await User.update(
     {
-       fullname,
-       email,
-       address,
+      fullname,
+      email,
+      address,
       phone, 
       avatar: urlImage, 
     },
