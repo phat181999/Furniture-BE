@@ -16,7 +16,17 @@ module.exports = {
         }
       },
       status: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        defaultValue: "PENDING",
+      },
+      numberPhone: {
+        type: Sequelize.INTEGER,
+      },
+      addresss: {
+        type: Sequelize.STRING,
+      },
+      zipcode: {
+        type: Sequelize.INTEGER
       },
       totalMoney: {
         type: Sequelize.FLOAT

@@ -34,15 +34,6 @@ const payMentPaypal = async(req,res) =>{
             "cancel_url": "https://localhost:4000//cancel"
         },
         "transactions": [{
-            // "item_list": {
-            //     "items": [{
-            //         "name": "asdsad",
-            //         "sku": "01",
-            //         "price": "1.00",
-            //         "currency": "USD",
-            //         "quantity": 1
-            //     }]
-            // },
             "amount": {
                 "currency": "USD",
                 "total": "1.00"

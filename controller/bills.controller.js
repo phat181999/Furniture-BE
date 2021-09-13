@@ -1,17 +1,28 @@
-const { bill, Product } = require('../models');
+const { bill, Product, orders: mOrders } = require('../models');
 
 const createBill = async (req,res) => {
 
     const {user} = req;
     const userID = user.id;
-    const { status,totalMoney } = req.body;
+    const { status,totalMoney, orders } = req.body;
 
     try{
-        const stepSuccess = await bill.create({ status,userID,totalMoney });
-        res.send(stepSuccess)
+        const resBill = await bill.create({ status,userID,totalMoney });
+        if (resBill?.id) {
+            let data = [];
+            for (let item of orders) {
+                data.push({
+                    listProductsID: item?.productID,
+                    billsOrderID: resBill?.id,
+                    quantity: item?.quantity || 0
+                });
+            }
+            await mOrders.bulkCreate(data); // bulkCreate insert many data one time
+        }
+        res.send(resBill);
     }
     catch(err){
-        res.send(err)
+        res.send(err);
     }
 };
 const getBills = async (req,res) =>{
@@ -37,47 +48,47 @@ const changeStatus = async(req,res) =>{
         await bill.update({status}, {where: {id}}) // update bill flow status
 
         let idProduct = []; // get all id Products in array productsList
-        let quantity = 0; // initialization quantity in object orders
-        let quantityProducts = 0; // initialization quantityProducts in array productsList
+        let quantity = []; // initialization quantity in object orders
+        let quantityProducts = []; // initialization quantityProducts in array productsList
+        let arrQuantity = []
 
         // findOne quantity and idProduct in array productsList
-        await bill.findOne({ include:[{model: Product, as: 'productsList'}] }).then((data) => {     
-            
+        await bill.findOne({ where:{ id}, include:['productsList']} )
+         .then(data =>{
+             res.json({data:data});
             for (let i = 0; i < data.productsList.length; i++) { // get id product in productsList
                 const element = data.productsList[i];
-                idProduct.push(element.id);
+                let id=element.id
+                let quantity=element.orders?.quantity || 0;
+                let quantityProducts=element.quantityProducts || 0;
+                arrQuantity.push({id,quantity,quantityProducts})
             }
 
-            for (let i = 0; i < data.productsList.length; i++) { // get quantity in object orders in array productsList
-                const element = data.productsList[i];
-                quantity = element.orders?.quantity || 0;
-            }
-        })
-        .catch((er) => {
-            throw er;
-        });
+         })
+         .catch(err =>{
+             throw err;
+         })
 
-        //findOne idProduct in productsList to send table and compare like id in products
-        await Product.findOne({ where:{ id: idProduct }}).then((data) => { 
-            quantityProducts = data.quantityProducts; // get quantity Product
-        })
-        .catch((er) => {
-            throw er;
-        });
-         
-        if(  status === 'success', quantityProducts, quantity ){
+        console.log(arrQuantity);
+        for (let i = 0; i < arrQuantity.length; i++) {
+            const element = arrQuantity[i];
+            const subtraction = parseInt(element.quantityProducts) - parseInt(element.quantity)
+            console.log(subtraction);
+        }
+
+        if(  status === 'SUCCESS', quantityProducts, quantity ){
 
             try{
-
-                const subtraction = parseInt(quantityProducts) - parseInt(quantity)
-
-                await Product.update({quantityProducts:subtraction},{where:{id:idProduct}})  
-
-                .then(( data ) => { data })
-
-                .catch(( er ) => {
-                    throw er;
-                });                                              
+                for (let i = 0; i < arrQuantity.length; i++) {
+                    const element = arrQuantity[i];
+                    const subtraction = parseInt(element.quantityProducts) - parseInt(element.quantity)
+                    console.log(subtraction);
+                    await Product.update({quantityProducts:subtraction},{where:{id:element.id}})  
+                    .then(( data ) => { data })
+                    .catch(( er ) => {
+                        throw er;
+                    });  
+                }                                           
             }
             catch(err){
                 res.status(401).send(err)
@@ -85,12 +96,12 @@ const changeStatus = async(req,res) =>{
             }
         }
 
-        if( status === 'fail'){
-            res.send('Fail')
+        if( status === 'FAIL'){
+            res.send('FAIL')
         }
 
-        if( status === 'peding'){
-            res.send('peding')
+        if( status === 'PENDING'){
+            res.send('PENDING')
         }
     }
     catch(err){

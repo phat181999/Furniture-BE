@@ -9,6 +9,7 @@ const {EmailRouter} = require('./email.router');
 const {colorRouter} = require('./color.router');
 const { orderRouter } = require('./order.router');
 const { billsRouter } = require('./bills.router');
+const { suppliersRouter } = require('./suppliers.router');
 
 const rootRouter = express.Router();
 rootRouter.use('/user',userRouter);
@@ -20,4 +21,5 @@ rootRouter.use('/email',EmailRouter);
 rootRouter.use('/color',colorRouter);
 rootRouter.use('/order',orderRouter);
 rootRouter.use('/bill',billsRouter);
+rootRouter.use('/suppliers',suppliersRouter);
 module.exports={rootRouter}
