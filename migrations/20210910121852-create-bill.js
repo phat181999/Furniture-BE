@@ -1,42 +1,31 @@
 'use strict';
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('checkOuts', {
+    await queryInterface.createTable('bills', {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      checkOutUserId: {
         type: Sequelize.INTEGER,
-        references: {
+      },
+      userID: {
+        type: Sequelize.INTEGER,
+        references:{
           model: 'users',
           key: 'id'
         }
       },
-      productCheckoutId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'products',
-          key : 'id'
-        }
-      },
-      address: {
-        type: Sequelize.STRING
-      },
-      zipcode: {
-        type: Sequelize.INTEGER
+      status: {
+        type: Sequelize.STRING,
+        defaultValue: "PENDING",
       },
       numberPhone: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
-      checkoutStatus: {
+      addresss: {
         type: Sequelize.STRING,
-        // values: ['success', 'fail', 'pending'],
-        defaultValue: 'pending'
       },
-      quantityCheckOut: {
+      zipcode: {
         type: Sequelize.INTEGER
       },
       totalMoney: {
@@ -53,6 +42,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('checkOuts');
+    await queryInterface.dropTable('bills');
   }
 };

@@ -10,13 +10,11 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({TypeProduct,Images,checkOut,colors,User}) {
+    static associate({TypeProduct,colors,bill}) {
       // define association here
       this.belongsTo(TypeProduct, {foreignKey: "productFlowTypeID", as:"flowTypeProducts"})
-      this.hasMany(Images, {foreignKey: 'imagesProductID', as: 'idImagesProduct'})
-      this.hasMany(checkOut, {foreignKey: 'productCheckoutId', as: 'idOfProduct'})
       this.belongsTo(colors, {foreignKey: 'colorProductsID', as: 'colorFlowProducts'})
-      this.belongsTo(User , {foreignKey: 'userProductsId', as: 'productsUser'})
+      this.belongsToMany(bill, {foreignKey: 'listProductsID', as: 'productsList', through: 'orders'})
     }
   };
   Product.init({
@@ -32,7 +30,40 @@ module.exports = (sequelize, DataTypes) => {
           len: [5,100],
         },
     },
-    pictures: [{
+
+    color: {
+        type: DataTypes.STRING,
+      allowNull: 
+        {
+          msg: 'Please enter your nameProduct'
+        },
+        validate: 
+        {
+          notEmpty: true,
+          len: [5,100],
+        },
+    },
+    picturesZero: [{
+      type:DataTypes.STRING,
+      URL: String,
+      filename: String
+    }] ,
+    picturesOne: [{
+      type:DataTypes.STRING,
+      URL: String,
+      filename: String
+    }] ,
+    picturesTwo: [{
+      type:DataTypes.STRING,
+      URL: String,
+      filename: String
+    }] ,
+    picturesThree: [{
+      type:DataTypes.STRING,
+      URL: String,
+      filename: String
+    }] ,
+    picturesFour: [{
       type:DataTypes.STRING,
       URL: String,
       filename: String

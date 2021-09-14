@@ -17,8 +17,6 @@ const {
   
 
 } = require("../controller/product.controller");
-const {uploadImage} = require('../middlewares/upload/upload-image');
-const {uploadPictures} = require('../middlewares/upload/aLotOf-Images');
 const { authenticate } = require ('../middlewares/Authenticate/authenticate');
 const { authorize } = require ('../middlewares/Authenticate/authorize');
 
