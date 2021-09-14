@@ -10,13 +10,9 @@ const {
   fillPriceMin,
   paginationProducts,
   filterColor,
-
   getSearch,
-
   getFlowTypeProduct
-  
-
-} = require("../controller/product.controller");
+  } = require("../controller/product.controller");
 const { authenticate } = require ('../middlewares/Authenticate/authenticate');
 const { authorize } = require ('../middlewares/Authenticate/authorize');
 

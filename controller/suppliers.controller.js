@@ -28,6 +28,19 @@ const deleteSupplier = async (req, res) =>{
     
     const { id } = req.params;
     
+    await Suppliers.findOne({ where: { id }})
+    .then(( data) => {
+        res.send(data)
+    })
+    .catch(( err ) =>{
+        res.send(err)
+    })
+};
+
+const getOneSupplier = async (req, res) =>{
+    
+    const { id } = req.params;
+    
     await Suppliers.destroy({ where: { id }})
     .then(( data) => {
         res.send(data)
@@ -35,11 +48,13 @@ const deleteSupplier = async (req, res) =>{
     .catch(( err ) =>{
         res.send(err)
     })
-}
+};
+
 
 
 module.exports = {
     createSupplier,
     getInformation,
-    deleteSupplier
+    deleteSupplier,
+    getOneSupplier
 }

@@ -1,5 +1,6 @@
 const { bill, Product, orders: mOrders } = require('../models');
-
+var moment = require('moment'); 
+const { Op } = require("sequelize");
 const createBill = async (req,res) => {
 
     const {user} = req;
@@ -25,6 +26,7 @@ const createBill = async (req,res) => {
         res.send(err);
     }
 };
+
 const getBills = async (req,res) =>{
     
     const {user} = req;
@@ -39,6 +41,7 @@ const getBills = async (req,res) =>{
         throw err;
     })
 };
+
 const changeStatus = async(req,res) =>{
 
     const {id} = req.params;
@@ -47,7 +50,6 @@ const changeStatus = async(req,res) =>{
     try{
         await bill.update({status}, {where: {id}}) // update bill flow status
 
-        let idProduct = []; // get all id Products in array productsList
         let quantity = []; // initialization quantity in object orders
         let quantityProducts = []; // initialization quantityProducts in array productsList
         let arrQuantity = []
@@ -67,14 +69,7 @@ const changeStatus = async(req,res) =>{
          })
          .catch(err =>{
              throw err;
-         })
-
-        console.log(arrQuantity);
-        for (let i = 0; i < arrQuantity.length; i++) {
-            const element = arrQuantity[i];
-            const subtraction = parseInt(element.quantityProducts) - parseInt(element.quantity)
-            console.log(subtraction);
-        }         
+         })      
 
         if(  status === 'SUCCESS', quantityProducts, quantity ){
 
@@ -82,7 +77,6 @@ const changeStatus = async(req,res) =>{
                 for (let i = 0; i < arrQuantity.length; i++) {
                     const element = arrQuantity[i];
                     const subtraction = parseInt(element.quantityProducts) - parseInt(element.quantity)
-                    console.log(subtraction);
                     await Product.update({quantityProducts:subtraction},{where:{id:element.id}})  
                     .then(( data ) => { data })
                     .catch(( er ) => {
@@ -109,8 +103,79 @@ const changeStatus = async(req,res) =>{
         console.log(err);
     }
 };
+
+const statisticalMoney = async( req, res ) =>{
+
+    // const startDate = moment(new Date()).startOf('month').toDate();
+    // const endDate = moment(new Date()).endOf('month').toDate();
+    // ,{'created_at':{$gte: startDate, $lte: endDate}}
+    let total = 0;
+
+    await bill.findAll({ attributes:[ 'totalMoney']})
+    .then(( data ) =>{
+
+        for ( let i = 0; i < data.length;  i++){
+            totalMoney =  data[i].totalMoney;         
+            total += totalMoney;   
+        }
+        res.send( (total).toString() );
+    })
+    .catch(( err ) =>{
+        res.send(err);
+    })
+
+};
+
+const statisticalQuantity = async ( req, res ) =>{
+    
+    let totalQuantity = 0;
+
+    await mOrders.findAll({ attributes: ['quantity'] })
+    .then(data =>{
+        for( let i = 0; i < data.length; i++){
+            quantity = data[i]?.quantity;
+            totalQuantity += quantity;
+        }
+        res.send( (totalQuantity).toString() );
+    })
+    .catch(err =>{
+        console.log(err);
+        throw err;
+    })
+};
+
+const statitiscalQuantityProduct = async ( req, res ) =>{
+    
+    let totalQuantityProducts = 0;
+    let { search } = req.query;
+    let data = [];
+    let quantity = [];
+
+   try{
+    await mOrders.findAll({ 
+        include: [ "productsList" ],
+        })
+
+    .then(data =>{
+        for( let i = 0; i < data.productsList?.length; i++){
+            const element = data.productsList[i];
+            console.log(element);
+        }
+    })
+    .catch(err =>{
+        console.log(err);
+        throw err;
+    })
+   }
+   catch(err){
+       res.send(err)
+   }
+}
 module.exports = {
     createBill,
     getBills,
-    changeStatus
+    changeStatus,
+    statisticalMoney,
+    statisticalQuantity,
+    statitiscalQuantityProduct
 }

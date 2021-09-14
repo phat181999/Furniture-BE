@@ -262,11 +262,7 @@ const filterColor = async(req,res) =>{
       console.log(err);
 
     }
-  } catch (err) {
-    res.status(500).send(err);
-    console.log(err);
-  }
-};
+} 
 
 const getSearch = async (req, res) => {
   let { search } = req.query;
@@ -369,10 +365,6 @@ module.exports = {
   fillPriceMax,
   paginationProducts,
   filterColor,
-
   getSearch,
-
   getFlowTypeProduct,
-
-
 };
