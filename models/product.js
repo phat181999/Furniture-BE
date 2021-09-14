@@ -30,8 +30,9 @@ module.exports = (sequelize, DataTypes) => {
           len: [5,100],
         },
     },
+
     color: {
-      type: DataTypes.STRING,
+        type: DataTypes.STRING,
       allowNull: 
         {
           msg: 'Please enter your nameProduct'
