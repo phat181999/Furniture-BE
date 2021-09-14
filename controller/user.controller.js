@@ -56,13 +56,18 @@ const updateuser = async (req, res) => {
     const { file } = req;
     const urlImage = file ? `http://localhost:4000/${file.path}` : req.body.avatarUser;
     const { fullname, account, address, phone,email } = req.body;
-    const updateUsers = await User.update(
+
+   
+  const updateUsers = await User.update(
+
     {
-      fullname,
-      email,
-      address,
-      phone, 
-      avatar: urlImage, 
+
+       fullname:fullname?"":fullname,
+       email,
+       address:address ? address:"" ,
+       phone:parseInt(phone) ? phone : null, 
+       avatar: urlImage, 
+
     },
     { where: { account } }
     );
