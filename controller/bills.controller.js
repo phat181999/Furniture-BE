@@ -74,7 +74,7 @@ const changeStatus = async(req,res) =>{
             const element = arrQuantity[i];
             const subtraction = parseInt(element.quantityProducts) - parseInt(element.quantity)
             console.log(subtraction);
-        }
+        }         
 
         if(  status === 'SUCCESS', quantityProducts, quantity ){
 
