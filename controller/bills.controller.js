@@ -11,7 +11,7 @@ const createBill = async (req,res) => {
             let data = [];
             for (let item of orders) {
                 data.push({
-                    listProductsID: item?.productID,
+                    listProductsID: item?.id,
                     billsOrderID: resBill?.id,
                     quantity: item?.quantity || 0
                 });
