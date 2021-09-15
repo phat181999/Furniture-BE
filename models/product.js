@@ -30,19 +30,6 @@ module.exports = (sequelize, DataTypes) => {
           len: [5,100],
         },
     },
-
-    color: {
-        type: DataTypes.STRING,
-      allowNull: 
-        {
-          msg: 'Please enter your nameProduct'
-        },
-        validate: 
-        {
-          notEmpty: true,
-          len: [5,100],
-        },
-    },
     picturesZero: [{
       type:DataTypes.STRING,
       URL: String,

@@ -19,9 +19,14 @@ module.exports = (sequelize, DataTypes) => {
   bill.init({
     userID: DataTypes.INTEGER,
     status: DataTypes.STRING,
-    numberPhone: DataTypes.INTEGER,
+    numberPhone:{ 
+      type:DataTypes.STRING,
+    validate: 
+      {
+        notEmpty: true,
+        len: [11,12],
+      },},
     addresss: DataTypes.STRING,
-    zipcode: DataTypes.INTEGER,
     zipcode: DataTypes.INTEGER,
     totalMoney: DataTypes.FLOAT
   }, {

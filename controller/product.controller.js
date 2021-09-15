@@ -13,13 +13,21 @@ const createProducts = async (req, res) => {
       public_id: "products",
       with: 500,
       height: 500,
-
       crop: 'fill'
     })
-    const newProducts = await Product.create(
-     { nameProduct, colorProductsID, price, description, pictures:result.url, productFlowTypeID, quantityProducts},
-    );
-
+    const newProducts = await Product.create({
+      nameProduct,
+      colorProductsID,
+      price,
+      description,
+      picturesZero: result.url,
+      // picturesOne: result.url,
+      // picturesTwo: result.url,
+      // picturesThree: result.url,
+      // picturesFour: result.url,
+      productFlowTypeID,
+      quantityProducts,
+    });
     res.status(200).send(newProducts);
   } catch (err) {
     res.status(500).send(err);
@@ -262,10 +270,6 @@ const filterColor = async(req,res) =>{
       console.log(err);
 
     }
-  } catch (err) {
-    res.status(500).send(err);
-    console.log(err);
-  }
 };
 
 const getSearch = async (req, res) => {
@@ -279,11 +283,6 @@ const getSearch = async (req, res) => {
           [Op.or]: [
             {
               nameProduct: {
-                [Op.like]: `%${search}%`,
-              },
-            },
-            {
-              color: {
                 [Op.like]: `%${search}%`,
               },
             },

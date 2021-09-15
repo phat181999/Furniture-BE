@@ -4,10 +4,9 @@ const createBill = async (req,res) => {
 
     const {user} = req;
     const userID = user.id;
-    const { status,totalMoney, orders } = req.body;
-
+    const { totalMoney, orders,zipcode,addresss,numberPhone } = req.body;
     try{
-        const resBill = await bill.create({ status,userID,totalMoney });
+         const resBill = await bill.create({ zipcode,userID,totalMoney,numberPhone ,addresss});
         if (resBill?.id) {
             let data = [];
             for (let item of orders) {

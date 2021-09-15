@@ -20,7 +20,7 @@ module.exports = {
         defaultValue: "PENDING",
       },
       numberPhone: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       addresss: {
         type: Sequelize.STRING,
