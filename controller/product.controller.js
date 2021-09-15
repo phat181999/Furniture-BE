@@ -45,7 +45,8 @@ const getAllProducts = async (req, res) => {
 };
 const getOneProducts = async (req, res) => {
   const { id } = req.params;
-  const getOne = await Product.findOne({include:[{model:TypeProduct,as:"flowTypeProducts"},{model:colors,as:"colorFlowProducts"}]},{ where: { id } });
+  
+  const getOne = await Product.findOne({ where: { id } },{include:[{model:TypeProduct,as:"flowTypeProducts"},{model:colors,as:"colorFlowProducts"}]});
   try {
     res.status(200).send(getOne);
   } catch (err) {
