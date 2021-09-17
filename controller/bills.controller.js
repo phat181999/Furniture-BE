@@ -38,6 +38,19 @@ const getBills = async (req,res) =>{
         throw err;
     })
 };
+const getAllBills = async (req,res) =>{
+    
+
+    await bill.findAll({
+         include:['billsUser','productsList']
+    })
+    .then(data =>{
+        res.json({data:data});
+    })
+    .catch(err =>{
+        throw err;
+    })
+};
 const changeStatus = async(req,res) =>{
 
     const {id} = req.params;
@@ -111,5 +124,6 @@ const changeStatus = async(req,res) =>{
 module.exports = {
     createBill,
     getBills,
+    getAllBills,
     changeStatus
 }

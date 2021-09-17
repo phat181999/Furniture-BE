@@ -55,7 +55,6 @@ const getOneProducts = async (req, res) => {
 };
 const updateProducts = async (req, res) => {
   const { id } = req.params;
-
    const { file } = req;
    const { nameProduct, colorProductsID, price, description, productFlowTypeID, quantityProducts,products } = req.body;
 
